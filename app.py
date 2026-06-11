@@ -22,7 +22,7 @@ from src import almacen
 # ------------------------------------------------------------
 # CONFIGURACION GENERAL
 # ------------------------------------------------------------
-st.set_page_config(page_title="FacilDIAN", page_icon="🧾", layout="wide")
+st.set_page_config(page_title="FactuSnap", page_icon="🧾", layout="wide")
 
 # Cargamos datos una vez (catalogo fijo + estado del dia)
 catalogo = inventario.cargar_catalogo()
@@ -58,7 +58,7 @@ def cabecera():
             background: linear-gradient(90deg, #2E7D32 0%, #66BB6A 100%);
             padding: 16px 22px; border-radius: 14px; margin-bottom: 14px;">
             <div style="color:white; font-size:26px; font-weight:700;">
-                🌿 FacilDIAN
+                🌿 FactuSnap
             </div>
             <div style="color:#E8F5E9; font-size:14px; margin-top:2px;">
                 De tu lista escrita a mano a una factura, en segundos
@@ -74,7 +74,7 @@ def cabecera():
 # ============================================================
 def dibujar_menu():
     with st.sidebar:
-        st.markdown("### 🌿 FacilDIAN")
+        st.markdown("### 🌿 FactuSnap")
         st.caption("Facturación asistida por IA")
         st.divider()
 
@@ -126,11 +126,11 @@ def pantalla_inicio():
 
     # --- Info de la app en mini pestañas desplegables ---
     st.write("")
-    st.markdown("##### Conoce FacilDIAN")
+    st.markdown("##### Conoce FactuSnap")
 
     with st.expander("¿En qué consiste?"):
         st.write(
-            "FacilDIAN es una herramienta que convierte la lista de productos escrita a mano "
+            "FactuSnap es una herramienta que convierte la lista de productos escrita a mano "
             "en una factura digital. El empleado solo sube una foto de la lista: el agente la "
             "lee y arma una sola factura con todos los productos, sus nombres y precios, sin "
             "tener que digitar nada producto por producto."
@@ -139,7 +139,7 @@ def pantalla_inicio():
     with st.expander("¿Por qué se hizo?"):
         st.write(
             "Pasar a mano una lista larga de productos es lento, tedioso y propenso a errores "
-            "por letra ilegible. FacilDIAN hace ese trabajo en segundos: el empleado se ahorra "
+            "por letra ilegible. FactuSnap hace ese trabajo en segundos: el empleado se ahorra "
             "el tiempo de transcribir pedido por pedido y reduce las equivocaciones."
         )
 

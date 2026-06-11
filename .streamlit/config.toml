@@ -1,4 +1,4 @@
-# Tema visual de FacilDIAN — verde agro profesional.
+# Tema visual de FactuSnap — verde agro profesional.
 # Streamlit aplica estos colores a TODA la app automaticamente.
 [theme]
 primaryColor = "#2E7D32"             # verde principal (botones, acentos)

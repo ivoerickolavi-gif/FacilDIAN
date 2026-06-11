@@ -1,8 +1,9 @@
-# FacilDIAN
+# FactuSnap
 
-MVP que automatiza la facturacion de una tienda de medicamentos agricolas
-y veterinarios: foto de la lista manuscrita -> la IA extrae los productos ->
-arma la factura -> el empleado la revisa y la verifica.
+Herramienta que convierte una lista de productos escrita a mano en una
+factura digital: foto de la lista -> la IA extrae los productos -> arma la
+factura -> el empleado la revisa y la sube. Pensada para tiendas de insumos
+agricolas y veterinarios cuyos clientes (p.ej. fincas) envian listas a mano.
 
 ## Modulos
 1. OCR — foto a productos (Google Gemini)
