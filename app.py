@@ -80,7 +80,7 @@ def dibujar_menu():
 
         activo = st.session_state["seccion"]
 
-        if st.button("Facturar", use_container_width=True,
+        if st.button("Escanear lista", use_container_width=True,
                      type="primary" if activo == "Facturar" else "secondary"):
             st.session_state["seccion"] = "Facturar"
             st.session_state["facturando"] = False          # siempre arranca en el inicio
@@ -106,11 +106,11 @@ def pantalla_inicio():
     """Pantalla de entrada: presentacion + boton para empezar."""
     st.subheader("Convierte tu lista escrita a mano en una factura, en segundos")
     st.write(
-        "Toma una foto de la lista de ventas y la IA arma la factura por ti. "
-        "Tú solo la revisas y la verificas."
+        "Toma una foto de la lista de productos y la IA arma la factura por ti. "
+        "Tú solo la revisas y la subes."
     )
 
-    if st.button("Iniciar facturación", type="primary", use_container_width=True):
+    if st.button("Escanear lista", type="primary", use_container_width=True):
         st.session_state["facturando"] = True
         st.session_state["proceso_completado"] = 0
         st.rerun()
@@ -130,27 +130,24 @@ def pantalla_inicio():
 
     with st.expander("¿En qué consiste?"):
         st.write(
-            "FacilDIAN es una **herramienta** que le ahorra tiempo al empleado de la tienda. "
-            "En vez de digitar producto por producto la lista que un cliente mandó a comprar "
-            "(muchas veces desde lejos, con un cotero o un tercero), el empleado solo sube una "
-            "foto de esa lista: el agente la lee y arma **una sola factura** con todos los "
-            "productos, sus nombres y precios, lista para subirla a la facturación electrónica "
-            "del sistema que la tienda ya use."
+            "FacilDIAN es una herramienta que convierte la lista de productos escrita a mano "
+            "en una factura digital. El empleado solo sube una foto de la lista: el agente la "
+            "lee y arma una sola factura con todos los productos, sus nombres y precios, sin "
+            "tener que digitar nada producto por producto."
         )
 
     with st.expander("¿Por qué se hizo?"):
         st.write(
-            "Pasar a mano una lista larga de productos a un sistema de facturación es lento, "
-            "tedioso y propenso a errores por letra ilegible. FacilDIAN convierte esa lista en "
-            "una factura digital en segundos, sin volver a digitar nada."
+            "Pasar a mano una lista larga de productos es lento, tedioso y propenso a errores "
+            "por letra ilegible. FacilDIAN hace ese trabajo en segundos: el empleado se ahorra "
+            "el tiempo de transcribir pedido por pedido y reduce las equivocaciones."
         )
 
     with st.expander("¿A quién está dirigido?"):
         st.write(
-            "A tiendas y distribuidoras de insumos agrícolas y veterinarios que reciben pedidos "
-            "en listas escritas a mano y quieren facturarlos mucho más rápido en su propio "
-            "sistema de facturación electrónica. No reemplaza ese sistema: es una herramienta "
-            "que lo alimenta más rápido."
+            "A tiendas y distribuidoras de insumos agrícolas y veterinarios cuyos clientes "
+            "—por ejemplo fincas— envían cada cierto tiempo una lista escrita a mano con lo "
+            "que quieren comprar."
         )
 
 

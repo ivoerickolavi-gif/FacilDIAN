@@ -65,6 +65,11 @@ Reglas importantes:
   diferente presentacion (50ml, 100ml, 500ml, 1L, galon). Cada presentacion
   es un producto DISTINTO: NO los unas y NO descartes ninguno.
 - Fíjate en el numero de tamaño (ml, L, galon) para elegir la presentacion.
+- Los líquidos por litro se venden en presentacion de 1 L (y por galon, en 1
+  galon). Si ves un numero de litros distinto de 1 (por ejemplo "Glifosol 3 L"
+  o "Stop 2 L"), NO es un producto nuevo: es la presentacion de 1 L con la
+  CANTIDAD igual a ese numero. Ejemplo: "Glifosol 3 L" = nombre "Glifosol 1L"
+  con cantidad 3. Lo mismo con galones.
 - Usa SIEMPRE el nombre exacto del catalogo (no inventes nombres).
 - Si la letra coincide con un sinonimo, devuelve el nombre oficial.
 - Si ves un renglón que parece un producto pero NO está en el catálogo (o
