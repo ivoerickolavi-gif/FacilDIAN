@@ -6,7 +6,7 @@
 # NO debe contener logica de negocio (eso vive en src/).
 # ============================================================
 
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 
 import streamlit as st
 from PIL import Image
@@ -101,6 +101,46 @@ def dibujar_menu():
         st.caption(f"⚡ Potenciado por Google Gemini")
         st.caption(f"Modelo: `{ocr.MODELO}`")
         st.caption("Puede saturarse por exceso de solicitudes (cuota).")
+
+        # --- Panel de demostracion (para mostrar el cambio de dia en vivo) ---
+        st.divider()
+        with st.expander("🔧 Modo demostración"):
+            st.caption(
+                "Permite mostrar la función de 'lista en espera' sin esperar "
+                "un día real."
+            )
+
+            if st.button("1) Preparar ejemplo en espera",
+                         use_container_width=True, key="demo_preparar"):
+                ahora = datetime.now()
+                ejemplo = {
+                    "items": [
+                        {"nombre": "Ivermectina 1% 100ml", "cantidad": 1,
+                         "precio": 48000, "subtotal": 48000},
+                        {"nombre": "Aleman Galon", "cantidad": 1,
+                         "precio": 108000, "subtotal": 108000},
+                    ],
+                    "total": 156000,
+                    "fecha": ahora.strftime("%Y-%m-%d"),
+                    "hora": ahora.strftime("%H:%M:%S"),
+                }
+                estado["lista_espera"].append(ejemplo)
+                control_dian.guardar_estado(estado)
+                st.session_state["seccion"] = "Facturas"   # para que se vea
+                st.toast("Ejemplo agregado a 'En espera'", icon="⏳")
+                st.rerun()
+
+            if st.button("2) Simular día siguiente",
+                         use_container_width=True, key="demo_avanzar"):
+                # Atrasamos la fecha guardada un dia: al recargar, la app
+                # creera que amanecio y subira sola lo que estaba en espera.
+                ayer = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
+                estado["fecha"] = ayer
+                control_dian.guardar_estado(estado)
+                st.session_state["seccion"] = "Facturas"   # para que se vea
+                st.toast("Día avanzado · lo que estaba en espera se subió solo",
+                         icon="🌅")
+                st.rerun()
 
 
 # ============================================================
