@@ -61,7 +61,7 @@ def cabecera():
                 🌿 FacilDIAN
             </div>
             <div style="color:#E8F5E9; font-size:14px; margin-top:2px;">
-                Facturación inteligente para tu tienda agrícola y veterinaria
+                De tu lista escrita a mano a una factura, en segundos
             </div>
         </div>
         """,
@@ -87,7 +87,7 @@ def dibujar_menu():
             st.session_state["proceso_completado"] = 0
             st.rerun()
 
-        if st.button("Facturas", use_container_width=True,
+        if st.button("Mis facturas", use_container_width=True,
                      type="primary" if activo == "Facturas" else "secondary"):
             st.session_state["seccion"] = "Facturas"
             st.session_state["editando"] = None             # salimos de cualquier edicion
@@ -118,8 +118,8 @@ def pantalla_inicio():
     # Notificacion tras crear facturas (se muestra una sola vez)
     if st.session_state["aviso_pendiente"] > 0:
         st.toast(
-            f"{st.session_state['aviso_pendiente']} factura(s) realizada(s) con éxito "
-            "· Quedaron en Pendientes",
+            f"{st.session_state['aviso_pendiente']} factura(s) creada(s) con éxito "
+            "· Están en Mis facturas",
             icon="✅",
         )
         st.session_state["aviso_pendiente"] = 0   # consumida: no se repite
@@ -130,23 +130,27 @@ def pantalla_inicio():
 
     with st.expander("¿En qué consiste?"):
         st.write(
-            "FacilDIAN automatiza la facturación de una tienda de medicamentos agrícolas "
-            "y veterinarios. Subes una foto de la lista escrita a mano: la IA lee los "
-            "productos y cantidades y arma la factura. El empleado solo revisa el borrador "
-            "y lo verifica."
+            "FacilDIAN es una **herramienta** que le ahorra tiempo al empleado de la tienda. "
+            "En vez de digitar producto por producto la lista que un cliente mandó a comprar "
+            "(muchas veces desde lejos, con un cotero o un tercero), el empleado solo sube una "
+            "foto de esa lista: el agente la lee y arma **una sola factura** con todos los "
+            "productos, sus nombres y precios, lista para subirla a la facturación electrónica "
+            "del sistema que la tienda ya use."
         )
 
     with st.expander("¿Por qué se hizo?"):
         st.write(
-            "Antes el empleado anotaba las ventas en papel y luego las transcribía a mano "
-            "al computador: lento, tedioso y con errores por letra ilegible. FacilDIAN "
-            "elimina esa doble digitación, ahorra tiempo y reduce los errores."
+            "Pasar a mano una lista larga de productos a un sistema de facturación es lento, "
+            "tedioso y propenso a errores por letra ilegible. FacilDIAN convierte esa lista en "
+            "una factura digital en segundos, sin volver a digitar nada."
         )
 
     with st.expander("¿A quién está dirigido?"):
         st.write(
-            "A tiendas y distribuidoras de insumos agrícolas y veterinarios que quieren "
-            "facturar más rápido a partir de su lista de ventas escrita a mano."
+            "A tiendas y distribuidoras de insumos agrícolas y veterinarios que reciben pedidos "
+            "en listas escritas a mano y quieren facturarlos mucho más rápido en su propio "
+            "sistema de facturación electrónica. No reemplaza ese sistema: es una herramienta "
+            "que lo alimenta más rápido."
         )
 
 
@@ -251,7 +255,7 @@ def pantalla_subir_foto():
         if st.session_state["proceso_completado"] > 0:
             n = st.session_state["proceso_completado"]
             st.success("El proceso ha sido completado exitosamente")
-            st.caption(f"Se crearon {n} factura(s) y quedaron en Pendientes.")
+            st.caption(f"Se creó la factura. Está en Mis facturas.")
 
             # Aviso de lo que la IA vio pero NO esta en el catalogo
             no_rec = st.session_state.get("no_reconocidos", [])
@@ -391,25 +395,25 @@ def pagina_facturas():
     verificadas = estado["facturas"]
 
     tab_pend, tab_verif = st.tabs([
-        f"Pendientes ({len(pendientes)})",
-        f"Verificadas ({len(verificadas)})",
+        f"Facturas ({len(pendientes)})",
+        f"Facturas subidas ({len(verificadas)})",
     ])
 
-    # ---------- PESTAÑA 1: PENDIENTES ----------
+    # ---------- PESTAÑA 1: FACTURAS (escaneadas, listas para subir) ----------
     with tab_pend:
         if not pendientes:
-            st.info("No hay facturas pendientes. Crea una en la sección Facturar.")
+            st.info("No hay facturas. Escanea una lista en la sección Facturar.")
         else:
-            # Accion masiva ARRIBA: verificar todas de una vez (comodo si hay muchas)
-            if st.button("Verificar todas",
+            # Accion masiva ARRIBA: subir todas de una vez (comodo si hay muchas)
+            if st.button("Subir todas",
                          type="primary", use_container_width=True):
                 for factura in pendientes:
                     control_dian.verificar_factura(estado, factura)
-                pendientes.clear()                                    # quedan todas verificadas
+                pendientes.clear()                                    # quedan todas subidas
                 almacen.guardar_pendientes(pendientes)
-                st.toast("Todas las facturas fueron verificadas", icon="✅")
+                st.toast("Todas las facturas fueron subidas", icon="✅")
                 st.rerun()
-            st.caption("…o revísalas y verifícalas una por una:")
+            st.caption("…o revísalas y súbelas una por una:")
 
         for i, factura in enumerate(pendientes):
             # Si esta factura esta en modo edicion, mostramos el editor
@@ -435,16 +439,16 @@ def pagina_facturas():
                 )
 
                 # Botones pequeños y centrados: las columnas vacias de los
-                # extremos (3 y 3) empujan el grupo hacia el centro.
-                _, b_ver, b_edit, b_del, _ = st.columns([3, 1.4, 1.2, 0.8, 3],
+                # extremos empujan el grupo hacia el centro.
+                _, b_ver, b_edit, b_del, _ = st.columns([1.5, 2.3, 1.3, 0.8, 2],
                                                         gap="small")
 
-                if b_ver.button("Verificar", key=f"verificar_{i}",
+                if b_ver.button("Subir factura", key=f"verificar_{i}",
                                 type="primary", use_container_width=True):
                     control_dian.verificar_factura(estado, factura)
-                    pendientes.pop(i)                          # sale de pendientes
+                    pendientes.pop(i)                          # sale de Facturas
                     almacen.guardar_pendientes(pendientes)     # guardamos en disco
-                    st.toast("Factura verificada", icon="✅")
+                    st.toast("Factura subida", icon="✅")
                     st.rerun()
 
                 if b_edit.button("Editar", key=f"editar_{i}", use_container_width=True):
@@ -458,21 +462,21 @@ def pagina_facturas():
                     st.toast("Factura eliminada", icon="🗑️")
                     st.rerun()
 
-    # ---------- PESTAÑA 2: VERIFICADAS (historial) ----------
+    # ---------- PESTAÑA 2: FACTURAS SUBIDAS (historial) ----------
     with tab_verif:
         if not verificadas:
-            st.info("Aún no has verificado facturas. Verifica una en la pestaña Pendientes.")
+            st.info("Aún no has subido facturas. Súbelas desde la pestaña Facturas.")
 
         for i, factura in enumerate(verificadas):
             _tarjeta_factura(factura)
 
             col_anular, _ = st.columns([2, 6])
-            if col_anular.button("Anular", key=f"anular_{i}",
-                                 help="Devuelve la factura a Pendientes"):
+            if col_anular.button("Devolver", key=f"anular_{i}",
+                                 help="Devuelve la factura a la pestaña Facturas"):
                 devuelta = control_dian.anular_factura(estado, i)
-                st.session_state["pendientes"].append(devuelta)          # vuelve a pendientes
+                st.session_state["pendientes"].append(devuelta)          # vuelve a Facturas
                 almacen.guardar_pendientes(st.session_state["pendientes"])
-                st.toast("La factura volvió a Pendientes", icon="↩️")
+                st.toast("La factura volvió a Facturas", icon="↩️")
                 st.rerun()
 
 
