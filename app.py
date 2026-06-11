@@ -6,7 +6,7 @@
 # NO debe contener logica de negocio (eso vive en src/).
 # ============================================================
 
-from datetime import datetime, date, timedelta
+from datetime import datetime
 
 import streamlit as st
 from PIL import Image
@@ -94,53 +94,9 @@ def dibujar_menu():
             st.rerun()
 
         st.divider()
-        st.metric("Disponible hoy (DIAN)",
-                  revision.formatear_pesos(control_dian.disponible_hoy(estado)))
-
-        st.divider()
         st.caption(f"⚡ Potenciado por Google Gemini")
         st.caption(f"Modelo: `{ocr.MODELO}`")
         st.caption("Puede saturarse por exceso de solicitudes (cuota).")
-
-        # --- Panel de demostracion (para mostrar el cambio de dia en vivo) ---
-        st.divider()
-        with st.expander("🔧 Modo demostración"):
-            st.caption(
-                "Permite mostrar la función de 'lista en espera' sin esperar "
-                "un día real."
-            )
-
-            if st.button("1) Preparar ejemplo en espera",
-                         use_container_width=True, key="demo_preparar"):
-                ahora = datetime.now()
-                ejemplo = {
-                    "items": [
-                        {"nombre": "Ivermectina 1% 100ml", "cantidad": 1,
-                         "precio": 48000, "subtotal": 48000},
-                        {"nombre": "Aleman Galon", "cantidad": 1,
-                         "precio": 108000, "subtotal": 108000},
-                    ],
-                    "total": 156000,
-                    "fecha": ahora.strftime("%Y-%m-%d"),
-                    "hora": ahora.strftime("%H:%M:%S"),
-                }
-                estado["lista_espera"].append(ejemplo)
-                control_dian.guardar_estado(estado)
-                st.session_state["seccion"] = "Facturas"   # para que se vea
-                st.toast("Ejemplo agregado a 'En espera'", icon="⏳")
-                st.rerun()
-
-            if st.button("2) Simular día siguiente",
-                         use_container_width=True, key="demo_avanzar"):
-                # Atrasamos la fecha guardada un dia: al recargar, la app
-                # creera que amanecio y subira sola lo que estaba en espera.
-                ayer = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
-                estado["fecha"] = ayer
-                control_dian.guardar_estado(estado)
-                st.session_state["seccion"] = "Facturas"   # para que se vea
-                st.toast("Día avanzado · lo que estaba en espera se subió solo",
-                         icon="🌅")
-                st.rerun()
 
 
 # ============================================================
@@ -148,11 +104,10 @@ def dibujar_menu():
 # ============================================================
 def pantalla_inicio():
     """Pantalla de entrada: presentacion + boton para empezar."""
-    st.subheader("Convierte tu lista escrita a mano en facturas, en segundos")
+    st.subheader("Convierte tu lista escrita a mano en una factura, en segundos")
     st.write(
-        "Toma una foto de la lista del día y la IA genera todas las facturas, "
-        "respetando el tope por factura y el límite diario de la DIAN. "
-        "Tú solo revisas y verificas."
+        "Toma una foto de la lista de ventas y la IA arma la factura por ti. "
+        "Tú solo la revisas y la verificas."
     )
 
     if st.button("Iniciar facturación", type="primary", use_container_width=True):
@@ -175,11 +130,10 @@ def pantalla_inicio():
 
     with st.expander("¿En qué consiste?"):
         st.write(
-            "FacilDIAN automatiza la facturación diaria de una tienda de medicamentos "
-            "agrícolas y veterinarios. Subes una foto de la lista escrita a mano: la IA "
-            "lee los productos y cantidades, los agrupa en facturas (máximo 4 ítems, sin "
-            "pasar el tope por factura) y controla el límite diario de la DIAN. El empleado "
-            "solo revisa los borradores y los verifica."
+            "FacilDIAN automatiza la facturación de una tienda de medicamentos agrícolas "
+            "y veterinarios. Subes una foto de la lista escrita a mano: la IA lee los "
+            "productos y cantidades y arma la factura. El empleado solo revisa el borrador "
+            "y lo verifica."
         )
 
     with st.expander("¿Por qué se hizo?"):
@@ -191,9 +145,8 @@ def pantalla_inicio():
 
     with st.expander("¿A quién está dirigido?"):
         st.write(
-            "A tiendas y distribuidoras de insumos agrícolas y veterinarios que facturan "
-            "a diario y deben respetar un tope diario ante la DIAN, dividiendo las ventas "
-            "en varias facturas."
+            "A tiendas y distribuidoras de insumos agrícolas y veterinarios que quieren "
+            "facturar más rápido a partir de su lista de ventas escrita a mano."
         )
 
 
@@ -243,7 +196,7 @@ def pantalla_subir_foto():
                     st.write("Buscando precios en el inventario...")
                     valorados = inventario.valorar_productos(detectados, catalogo)  # Modulo 2
 
-                    st.write("Agrupando en facturas (máx 4 ítems, sin pasar el tope)...")
+                    st.write("Armando la factura...")
                     nuevas = agrupador.agrupar_en_facturas(valorados)              # Modulo 3
 
                     # Sellamos cada factura con fecha y hora (para el historial)
@@ -434,25 +387,12 @@ def _editar_factura(indice, factura):
 def pagina_facturas():
     st.title("Facturas")
 
-    # --- Tablero del limite diario DIAN ---
-    tope = control_dian.LIMITE_DIARIO_DIAN
-    facturado = estado["acumulado_dian"]
-    col1, col2, col3 = st.columns(3)
-    col1.metric("Tope del día", revision.formatear_pesos(tope))
-    col2.metric("Facturado hoy", revision.formatear_pesos(facturado))
-    col3.metric("Disponible", revision.formatear_pesos(control_dian.disponible_hoy(estado)))
-    st.progress(min(facturado / tope, 1.0) if tope else 0)
-
-    st.divider()
-
     pendientes = st.session_state["pendientes"]
     verificadas = estado["facturas"]
-    espera = estado["lista_espera"]
 
-    tab_pend, tab_verif, tab_espera = st.tabs([
+    tab_pend, tab_verif = st.tabs([
         f"Pendientes ({len(pendientes)})",
         f"Verificadas ({len(verificadas)})",
-        f"En espera ({len(espera)})",
     ])
 
     # ---------- PESTAÑA 1: PENDIENTES ----------
@@ -460,14 +400,14 @@ def pagina_facturas():
         if not pendientes:
             st.info("No hay facturas pendientes. Crea una en la sección Facturar.")
         else:
-            # Accion masiva ARRIBA: procesar todas de una vez (comodo si hay muchas)
-            if st.button("Verificar y subir todas a la DIAN",
+            # Accion masiva ARRIBA: verificar todas de una vez (comodo si hay muchas)
+            if st.button("Verificar todas",
                          type="primary", use_container_width=True):
                 for factura in pendientes:
-                    control_dian.verificar_factura(estado, factura)   # Modulo 4
-                pendientes.clear()                                    # quedan todas procesadas
+                    control_dian.verificar_factura(estado, factura)
+                pendientes.clear()                                    # quedan todas verificadas
                 almacen.guardar_pendientes(pendientes)
-                st.toast("Todas las facturas fueron procesadas", icon="✅")
+                st.toast("Todas las facturas fueron verificadas", icon="✅")
                 st.rerun()
             st.caption("…o revísalas y verifícalas una por una:")
 
@@ -501,13 +441,10 @@ def pagina_facturas():
 
                 if b_ver.button("Verificar", key=f"verificar_{i}",
                                 type="primary", use_container_width=True):
-                    resultado = control_dian.verificar_factura(estado, factura)  # Modulo 4
+                    control_dian.verificar_factura(estado, factura)
                     pendientes.pop(i)                          # sale de pendientes
                     almacen.guardar_pendientes(pendientes)     # guardamos en disco
-                    if resultado == "aprobada":
-                        st.toast("Factura verificada y subida a la DIAN", icon="✅")
-                    else:
-                        st.toast("Excede el tope diario → lista de espera", icon="⏳")
+                    st.toast("Factura verificada", icon="✅")
                     st.rerun()
 
                 if b_edit.button("Editar", key=f"editar_{i}", use_container_width=True):
@@ -526,31 +463,17 @@ def pagina_facturas():
         if not verificadas:
             st.info("Aún no has verificado facturas. Verifica una en la pestaña Pendientes.")
 
-        hoy = date.today().strftime("%Y-%m-%d")
         for i, factura in enumerate(verificadas):
             _tarjeta_factura(factura)
 
-            # Solo se puede anular el envio de las facturas de HOY
-            # (las de dias anteriores quedan como historial de solo lectura)
-            if factura.get("fecha") == hoy:
-                col_anular, _ = st.columns([2, 6])
-                if col_anular.button("Anular envío", key=f"anular_{i}",
-                                     help="Devuelve la factura a Pendientes"):
-                    devuelta = control_dian.anular_factura(estado, i)        # Modulo 4
-                    st.session_state["pendientes"].append(devuelta)          # vuelve a pendientes
-                    almacen.guardar_pendientes(st.session_state["pendientes"])
-                    st.toast("Envío anulado · La factura volvió a Pendientes", icon="↩️")
-                    st.rerun()
-
-    # ---------- PESTAÑA 3: EN ESPERA ----------
-    with tab_espera:
-        if not espera:
-            st.info("No hay facturas en espera.")
-        else:
-            st.caption("🕐 El límite de hoy ha sido alcanzado · estas facturas se "
-                       "subirán a la DIAN mañana.")
-            for factura in espera:
-                _tarjeta_factura(factura)
+            col_anular, _ = st.columns([2, 6])
+            if col_anular.button("Anular", key=f"anular_{i}",
+                                 help="Devuelve la factura a Pendientes"):
+                devuelta = control_dian.anular_factura(estado, i)
+                st.session_state["pendientes"].append(devuelta)          # vuelve a pendientes
+                almacen.guardar_pendientes(st.session_state["pendientes"])
+                st.toast("La factura volvió a Pendientes", icon="↩️")
+                st.rerun()
 
 
 # ============================================================
