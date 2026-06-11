@@ -13,9 +13,9 @@ import google.generativeai as genai
 from google.api_core import exceptions as google_errors
 
 # --- Configuracion del modelo ---
-# gemini-2.5-flash: modelo estable, buena vision para letra manuscrita
-# y capa gratuita amplia. Ideal para el MVP.
-MODELO = "gemini-2.5-flash"   # cambiar aqui si quieres otro modelo
+# gemini-2.0-flash: estable, buena vision para letra manuscrita y con su
+# propia cuota gratuita (aparte de la del 2.5). Cambiar aqui si hace falta.
+MODELO = "gemini-2.0-flash"   # cambiar aqui si quieres otro modelo
 
 REINTENTOS = 3          # cuantas veces reintentar si llega un 429
 ESPERA_SEGUNDOS = 5     # cuanto esperar entre reintentos
