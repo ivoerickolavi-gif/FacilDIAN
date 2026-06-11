@@ -321,11 +321,11 @@ def _editar_factura(indice, factura):
         st.markdown(f"**{item['nombre']}**")
         col_cant, col_prec = st.columns(2)
         cant = col_cant.number_input(
-            "Cantidad", min_value=0, step=1, value=item["cantidad"],
+            "Cantidad", min_value=0, step=1, value=int(item["cantidad"]),
             key=f"cant_{indice}_{j}",
         )
         prec = col_prec.number_input(
-            "Precio (c/u)", min_value=0, step=500, value=item["precio"],
+            "Precio (c/u)", min_value=0, step=500, value=int(item["precio"]),
             key=f"prec_{indice}_{j}",
         )
         cantidades.append(cant)

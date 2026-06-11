@@ -35,10 +35,11 @@ def valorar_productos(items_detectados, catalogo):
     valorados = []
     for item in items_detectados:
         precio = _buscar_precio(item["nombre"], catalogo)
+        cantidad = int(item["cantidad"])   # nos aseguramos de que sea entero
         valorados.append({
             "nombre": item["nombre"],
-            "cantidad": item["cantidad"],
+            "cantidad": cantidad,
             "precio": precio,
-            "subtotal": precio * item["cantidad"],
+            "subtotal": precio * cantidad,
         })
     return valorados
