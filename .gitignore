@@ -1,0 +1,11 @@
+# Secretos: la clave de Gemini NUNCA se sube
+.streamlit/secrets.toml
+
+# Basura de Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Config local de Claude Code (no es parte de la app)
+.claude/

@@ -1,0 +1,113 @@
+{
+  "_comentario": "Catalogo base. Cada presentacion (tamano) es un producto distinto con su precio. El campo 'sinonimos' ayuda a la IA a reconocer la letra manuscrita.",
+  "productos": [
+    {
+      "id": "P01",
+      "nombre": "Ivermectina 1% 50ml",
+      "sinonimos": ["ivermectina 50", "iver 50", "ivermec 50ml", "ivomec 50"],
+      "precio": 28000
+    },
+    {
+      "id": "P02",
+      "nombre": "Ivermectina 1% 100ml",
+      "sinonimos": ["ivermectina 100", "iver 100", "ivermec 100ml", "ivomec 100"],
+      "precio": 48000
+    },
+    {
+      "id": "P03",
+      "nombre": "Ivermectina 1% 500ml",
+      "sinonimos": ["ivermectina 500", "iver 500", "ivermec 500ml", "ivomec 500"],
+      "precio": 200000
+    },
+    {
+      "id": "P04",
+      "nombre": "Oxitetraciclina 50ml",
+      "sinonimos": ["oxitetraciclina 50", "oxi 50", "oxitetra 50ml", "terramicina 50"],
+      "precio": 22000
+    },
+    {
+      "id": "P05",
+      "nombre": "Oxitetraciclina 100ml",
+      "sinonimos": ["oxitetraciclina 100", "oxi 100", "oxitetra 100ml", "terramicina 100"],
+      "precio": 38000
+    },
+    {
+      "id": "P06",
+      "nombre": "Oxitetraciclina 500ml",
+      "sinonimos": ["oxitetraciclina 500", "oxi 500", "oxitetra 500ml", "terramicina 500"],
+      "precio": 160000
+    },
+    {
+      "id": "P07",
+      "nombre": "Vitamina AD3E 100ml",
+      "sinonimos": ["vitamina ad3e 100", "ad3e 100", "vitamina 100ml", "adtre 100"],
+      "precio": 35000
+    },
+    {
+      "id": "P08",
+      "nombre": "Vitamina AD3E 500ml",
+      "sinonimos": ["vitamina ad3e 500", "ad3e 500", "vitamina 500ml", "adtre 500"],
+      "precio": 150000
+    },
+    {
+      "id": "P09",
+      "nombre": "Hierro Dextrano 100ml",
+      "sinonimos": ["hierro dextrano 100", "hierro 100", "dextrano 100ml", "fierro 100"],
+      "precio": 30000
+    },
+    {
+      "id": "P10",
+      "nombre": "Hierro Dextrano 500ml",
+      "sinonimos": ["hierro dextrano 500", "hierro 500", "dextrano 500ml", "fierro 500"],
+      "precio": 130000
+    },
+    {
+      "id": "P11",
+      "nombre": "Glifosato 1L",
+      "sinonimos": ["glifosato litro", "glifo 1l", "glifosato 1 litro", "glifosato l"],
+      "precio": 25000
+    },
+    {
+      "id": "P12",
+      "nombre": "Glifosato Galon",
+      "sinonimos": ["glifosato galon", "glifo galon", "glifosato gal", "glifosato 1 galon"],
+      "precio": 90000
+    },
+    {
+      "id": "P13",
+      "nombre": "Glifosol 1L",
+      "sinonimos": ["glifosol litro", "glifosol 1l", "glifosol 1 litro", "glifosol l"],
+      "precio": 28000
+    },
+    {
+      "id": "P14",
+      "nombre": "Glifosol Galon",
+      "sinonimos": ["glifosol galon", "glifosol gal", "glifosol 1 galon"],
+      "precio": 100000
+    },
+    {
+      "id": "P15",
+      "nombre": "Stop 1L",
+      "sinonimos": ["stop litro", "stop 1l", "stop 1 litro", "stop l"],
+      "precio": 32000
+    },
+    {
+      "id": "P16",
+      "nombre": "Stop Galon",
+      "sinonimos": ["stop galon", "stop gal", "stop 1 galon"],
+      "precio": 115000
+    },
+    {
+      "id": "P17",
+      "nombre": "Aleman 1L",
+      "sinonimos": ["aleman litro", "aleman 1l", "aleman 1 litro", "aleman l"],
+      "precio": 30000
+    },
+    {
+      "id": "P18",
+      "nombre": "Aleman Galon",
+      "sinonimos": ["aleman galon", "aleman gal", "aleman 1 galon"],
+      "precio": 108000
+    }
+  ]
+}

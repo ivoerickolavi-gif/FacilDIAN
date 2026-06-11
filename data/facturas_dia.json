@@ -1,0 +1,7 @@
+{
+  "_comentario": "Memoria del dia: facturas verificadas y acumulado DIAN. Se llena en uso.",
+  "fecha": null,
+  "acumulado_dian": 0,
+  "facturas": [],
+  "lista_espera": []
+}

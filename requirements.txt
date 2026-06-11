@@ -1,0 +1,5 @@
+# Librerias que Streamlit Cloud instalara solo al desplegar.
+# (versiones se afinan al escribir el codigo)
+streamlit
+google-generativeai
+pillow
